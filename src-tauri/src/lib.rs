@@ -56,8 +56,7 @@ fn reset_position(app: &AppHandle) {
 
 #[cfg(target_os = "windows")]
 fn apply_windows_widget_shape(window: &WebviewWindow) {
-    use windows::Win32::Graphics::Gdi::CreateRoundRectRgn;
-    use windows::Win32::UI::WindowsAndMessaging::SetWindowRgn;
+    use windows::Win32::Graphics::Gdi::{CreateRoundRectRgn, SetWindowRgn};
 
     let Ok(hwnd) = window.hwnd() else {
         return;

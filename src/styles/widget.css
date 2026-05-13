@@ -4,7 +4,9 @@
   display: block;
   border-radius: 36px;
   padding: 0;
-  background: transparent;
+  background:
+    radial-gradient(circle at 22% 14%, rgba(255, 255, 255, 0.96), rgba(255, 249, 251, 0.78) 38%, rgba(255, 249, 251, 0.96) 100%),
+    #fff9fb;
   overflow: hidden;
 }
 
@@ -13,29 +15,27 @@
   width: 100vw;
   height: 100vh;
   border-radius: 36px;
-  padding: 18px 0 0;
-  overflow: visible;
+  padding: 0;
+  overflow: hidden;
 }
 
 .widget-card {
   position: relative;
-  width: calc(100% - 0px);
-  height: calc(100% - 18px);
+  width: 100%;
+  height: 100%;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(247, 181, 201, 0.6);
   border-radius: 36px;
   background:
     radial-gradient(circle at 22% 14%, rgba(255, 255, 255, 0.96), rgba(255, 249, 251, 0.78) 38%, rgba(255, 249, 251, 0.96) 100%),
     #fff9fb;
-  box-shadow:
-    0 22px 46px rgba(209, 86, 126, 0.2),
-    inset 0 0 0 1px rgba(247, 181, 201, 0.34);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.76);
 }
 
 .top-bow {
   position: absolute;
   z-index: 4;
-  top: -16px;
+  top: 2px;
   left: 50%;
   width: 66px;
   height: 66px;
@@ -50,8 +50,8 @@
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr) auto;
   align-items: center;
-  min-height: 138px;
-  padding: 38px 20px 14px;
+  min-height: 140px;
+  padding: 36px 20px 14px;
   user-select: none;
 }
 
@@ -190,7 +190,7 @@
 }
 
 .task-list {
-  height: 420px;
+  height: 384px;
   margin: 14px 0 0;
   padding: 0;
   overflow-y: auto;
@@ -325,7 +325,7 @@
 }
 
 .empty-state {
-  height: 420px;
+  height: 384px;
   display: grid;
   place-items: center;
   color: #d98aa6;
@@ -336,7 +336,7 @@
 .bottom-area {
   position: absolute;
   right: 26px;
-  bottom: 18px;
+  bottom: 16px;
   left: 26px;
 }
 
@@ -352,7 +352,7 @@
 .add-task-input-shell {
   position: absolute;
   right: 0;
-  bottom: 42px;
+  bottom: 38px;
   left: 0;
   display: grid;
   grid-template-columns: 1fr 40px 40px;

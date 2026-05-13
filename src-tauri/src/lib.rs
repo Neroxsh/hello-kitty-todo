@@ -4,7 +4,7 @@ use tauri::{
     image::Image,
     menu::{Menu, MenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
-    AppHandle, Emitter, Manager, PhysicalPosition, Position, WindowEvent,
+    AppHandle, Emitter, Manager, PhysicalPosition, Position, WebviewWindow, WindowEvent,
 };
 
 static PINNED: AtomicBool = AtomicBool::new(true);
@@ -54,6 +54,37 @@ fn reset_position(app: &AppHandle) {
     let _ = app.emit("position-reset", position);
 }
 
+#[cfg(target_os = "windows")]
+fn apply_windows_widget_shape(window: &WebviewWindow) {
+    use windows::Win32::Graphics::Gdi::CreateRoundRectRgn;
+    use windows::Win32::UI::WindowsAndMessaging::SetWindowRgn;
+
+    let Ok(hwnd) = window.hwnd() else {
+        return;
+    };
+    let Ok(size) = window.outer_size() else {
+        return;
+    };
+
+    // This is a real native window region, not a transparent rectangle around the UI.
+    let region = unsafe { CreateRoundRectRgn(0, 0, size.width as i32 + 1, size.height as i32 + 1, 44, 44) };
+    if !region.is_invalid() {
+        unsafe {
+            let _ = SetWindowRgn(hwnd, Some(region), true);
+        }
+    }
+}
+
+#[cfg(not(target_os = "windows"))]
+fn apply_windows_widget_shape(_window: &WebviewWindow) {}
+
+fn setup_widget_window(app: &AppHandle) {
+    if let Some(window) = app.get_webview_window("main") {
+        let _ = window.set_shadow(false);
+        apply_windows_widget_shape(&window);
+    }
+}
+
 fn build_tray(app: &AppHandle) -> tauri::Result<()> {
     let show = MenuItem::with_id(app, "show", "显示小组件", true, None::<&str>)?;
     let hide = MenuItem::with_id(app, "hide", "隐藏小组件", true, None::<&str>)?;
@@ -97,12 +128,21 @@ pub fn run() {
         .plugin(tauri_plugin_store::Builder::default().build())
         .setup(|app| {
             build_tray(app.handle())?;
+            setup_widget_window(app.handle());
             Ok(())
         })
         .on_window_event(|window, event| {
-            if let WindowEvent::CloseRequested { api, .. } = event {
-                api.prevent_close();
-                let _ = window.hide();
+            match event {
+                WindowEvent::Resized(_) => {
+                    if let Some(webview_window) = window.get_webview_window(window.label()) {
+                        apply_windows_widget_shape(&webview_window);
+                    }
+                }
+                WindowEvent::CloseRequested { api, .. } => {
+                    api.prevent_close();
+                    let _ = window.hide();
+                }
+                _ => {}
             }
         })
         .run(tauri::generate_context!())

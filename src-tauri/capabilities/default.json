@@ -1,0 +1,16 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "桌面待办小组件默认权限",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:event:default",
+    "core:window:default",
+    "core:window:allow-hide",
+    "core:window:allow-outer-position",
+    "core:window:allow-set-always-on-top",
+    "core:window:allow-start-dragging",
+    "store:default"
+  ]
+}

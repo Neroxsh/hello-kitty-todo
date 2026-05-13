@@ -23,7 +23,7 @@
 | 系统 | 下载哪个文件 |
 | --- | --- |
 | macOS | `.dmg` |
-| Windows | `.msi` 或 `.exe` |
+| Windows | `.exe` |
 
 > macOS 版本暂未签名。第一次打开时，如果系统拦截，可以右键应用选择“打开”，或到系统设置里允许打开。
 
@@ -83,7 +83,7 @@ git push origin v0.1.0
 构建产物：
 
 - macOS：`.dmg`
-- Windows：`.msi` / `.exe`
+- Windows：`.exe`
 
 ## 技术栈
 

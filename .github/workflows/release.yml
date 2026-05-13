@@ -15,9 +15,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform:
-          - macos-latest
-          - windows-latest
+        include:
+          - platform: macos-latest
+            bundles: --bundles dmg
+          - platform: windows-latest
+            bundles: --bundles nsis
 
     steps:
       - name: Checkout
@@ -40,6 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          args: ${{ matrix.bundles }}
           tagName: ${{ github.ref_name }}
           releaseName: "我的任务 ${{ github.ref_name }}"
           releaseBody: |
@@ -48,7 +51,7 @@ jobs:
             下载安装包后即可使用：
 
             - macOS：下载 `.dmg`
-            - Windows：下载 `.msi` 或 `.exe`
+            - Windows：下载 `.exe`
 
             macOS 版本暂未签名，第一次打开时可能需要右键选择“打开”。
           releaseDraft: false

@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="./docs/assets/reference_widget_full.png" alt="我的任务桌面待办小组件预览" width="920" />
-</p>
-
 <h1 align="center">我的任务</h1>
 
 <p align="center">
@@ -14,6 +10,10 @@
   </a>
   <img alt="macOS" src="https://img.shields.io/badge/macOS-supported-ff8db3?style=for-the-badge" />
   <img alt="Windows" src="https://img.shields.io/badge/Windows-supported-ff8db3?style=for-the-badge" />
+</p>
+
+<p align="center">
+  <img src="./docs/assets/reference_widget_full.png" alt="我的任务桌面待办小组件预览" width="552" />
 </p>
 
 ## 下载

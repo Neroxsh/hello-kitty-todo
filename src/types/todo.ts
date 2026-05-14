@@ -21,4 +21,5 @@ export interface AppState {
   alwaysOnTop: boolean;
   theme: "pink";
   widgetPosition?: WidgetPosition;
+  widgetHeight?: number;
 }

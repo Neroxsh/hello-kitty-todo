@@ -26,5 +26,6 @@ export function createInitialState(): AppState {
     alwaysOnTop: true,
     theme: "pink",
     widgetPosition: { x: 980, y: 80 },
+    widgetHeight: 592,
   };
 }

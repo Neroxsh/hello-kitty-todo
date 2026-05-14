@@ -5,6 +5,7 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { TaskList } from "./components/TaskList";
 import { useTodos } from "./hooks/useTodos";
+import { ResizeHandle } from "./components/ResizeHandle";
 import { listenToWindowEvents, startWindowDrag } from "./hooks/useWidgetWindow";
 import { formatTodayLabel } from "./utils/date";
 
@@ -20,6 +21,7 @@ export default function App() {
     setPinned,
     setWidgetPosition,
     saveCurrentWindowPosition,
+    saveWidgetHeight,
   } = useTodos();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -42,7 +44,7 @@ export default function App() {
   return (
     <main className="app-stage">
       <section className="widget-shell" aria-label="桌面待办小组件">
-        <div className="widget-card">
+        <div id="widget-card" className="widget-card">
           <Header
             dateLabel={dateLabel}
             filter={state.filter}
@@ -78,6 +80,10 @@ export default function App() {
             <AddTask isAdding={isAdding} onCancel={() => setIsAdding(false)} onAdd={addTodo} />
             <Footer pinned={state.alwaysOnTop} onTogglePinned={() => setPinned(!state.alwaysOnTop)} />
           </div>
+          <ResizeHandle
+            minHeight={520}
+            onResizeEnd={(height) => saveWidgetHeight(height)}
+          />
         </div>
       </section>
     </main>

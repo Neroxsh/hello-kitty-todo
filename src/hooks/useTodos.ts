@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createInitialState } from "../store/defaultState";
 import { loadAppState, saveAppState } from "../store/appStore";
-import { readWindowPosition, setWindowPinned, setWindowPosition } from "./useWidgetWindow";
+import { readWindowHeight, readWindowPosition, setWindowPinned, setWindowPosition, setWidgetWindowHeight } from "./useWidgetWindow";
 import type { AppState, FilterType, TodoItem, WidgetPosition } from "../types/todo";
 
 function createId(): string {
@@ -21,6 +21,9 @@ export function useTodos() {
         setHydrated(true);
         void setWindowPinned(savedState.alwaysOnTop);
         void setWindowPosition(savedState.widgetPosition);
+        if (savedState.widgetHeight) {
+          void setWidgetWindowHeight(savedState.widgetHeight);
+        }
       }
     });
 
@@ -115,6 +118,10 @@ export function useTodos() {
     setState((currentState) => ({ ...currentState, widgetPosition }));
   }, []);
 
+  const setWidgetHeight = useCallback((widgetHeight: number) => {
+    setState((currentState) => ({ ...currentState, widgetHeight }));
+  }, []);
+
   const saveCurrentWindowPosition = useCallback(async () => {
     const widgetPosition = await readWindowPosition();
 
@@ -122,6 +129,14 @@ export function useTodos() {
       setWidgetPosition(widgetPosition);
     }
   }, [setWidgetPosition]);
+
+  const saveWidgetHeight = useCallback(async (height?: number) => {
+    const h = height ?? (await readWindowHeight());
+
+    if (h) {
+      setWidgetHeight(h);
+    }
+  }, [setWidgetHeight]);
 
   return {
     state,
@@ -134,6 +149,8 @@ export function useTodos() {
     setFilter,
     setPinned,
     setWidgetPosition,
+    setWidgetHeight,
     saveCurrentWindowPosition,
+    saveWidgetHeight,
   };
 }

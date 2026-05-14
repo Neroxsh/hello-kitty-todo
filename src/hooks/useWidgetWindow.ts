@@ -1,5 +1,5 @@
 import { listen } from "@tauri-apps/api/event";
-import { PhysicalPosition } from "@tauri-apps/api/dpi";
+import { PhysicalPosition, PhysicalSize } from "@tauri-apps/api/dpi";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { WidgetPosition } from "../types/todo";
 
@@ -39,6 +39,25 @@ export async function readWindowPosition(): Promise<WidgetPosition | undefined> 
 
   const position = await getCurrentWindow().outerPosition();
   return { x: position.x, y: position.y };
+}
+
+export async function setWidgetWindowHeight(height: number): Promise<void> {
+  if (!isTauriRuntime() || height <= 0) {
+    return;
+  }
+
+  const window = getCurrentWindow();
+  const currentSize = await window.outerSize();
+  await window.setSize(new PhysicalSize(currentSize.width, Math.round(height)));
+}
+
+export async function readWindowHeight(): Promise<number | undefined> {
+  if (!isTauriRuntime()) {
+    return undefined;
+  }
+
+  const size = await getCurrentWindow().outerSize();
+  return size.height;
 }
 
 export async function listenToWindowEvents(

@@ -77,6 +77,10 @@ export function normalizeState(value: unknown): AppState {
       typeof state.widgetPosition.y === "number"
         ? state.widgetPosition
         : initial.widgetPosition,
+    widgetHeight:
+      typeof state.widgetHeight === "number" && state.widgetHeight > 0
+        ? state.widgetHeight
+        : initial.widgetHeight,
   };
 }
 

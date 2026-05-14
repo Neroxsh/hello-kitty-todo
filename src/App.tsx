@@ -5,7 +5,7 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { TaskList } from "./components/TaskList";
 import { useTodos } from "./hooks/useTodos";
-import { listenToWindowEvents } from "./hooks/useWidgetWindow";
+import { listenToWindowEvents, startWindowDrag } from "./hooks/useWidgetWindow";
 import { formatTodayLabel } from "./utils/date";
 
 export default function App() {
@@ -55,6 +55,7 @@ export default function App() {
               setIsFilterOpen((open) => !open);
               setIsAdding(false);
             }}
+            onDragStart={() => void startWindowDrag()}
             onDragEnd={() => void saveCurrentWindowPosition()}
           />
           {isFilterOpen ? (

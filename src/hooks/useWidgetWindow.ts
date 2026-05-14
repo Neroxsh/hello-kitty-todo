@@ -1,7 +1,18 @@
+import { listen } from "@tauri-apps/api/event";
+import { PhysicalPosition } from "@tauri-apps/api/dpi";
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import type { WidgetPosition } from "../types/todo";
 
 function isTauriRuntime(): boolean {
   return "__TAURI_INTERNALS__" in window;
+}
+
+export async function startWindowDrag(): Promise<void> {
+  if (!isTauriRuntime()) {
+    return;
+  }
+
+  await getCurrentWindow().startDragging().catch(() => undefined);
 }
 
 export async function setWindowPinned(pinned: boolean): Promise<void> {
@@ -9,8 +20,15 @@ export async function setWindowPinned(pinned: boolean): Promise<void> {
     return;
   }
 
-  const { getCurrentWindow } = await import("@tauri-apps/api/window");
   await getCurrentWindow().setAlwaysOnTop(pinned);
+}
+
+export async function setWindowPosition(position?: WidgetPosition): Promise<void> {
+  if (!isTauriRuntime() || !position) {
+    return;
+  }
+
+  await getCurrentWindow().setPosition(new PhysicalPosition(Math.round(position.x), Math.round(position.y)));
 }
 
 export async function readWindowPosition(): Promise<WidgetPosition | undefined> {
@@ -18,7 +36,6 @@ export async function readWindowPosition(): Promise<WidgetPosition | undefined> 
     return undefined;
   }
 
-  const { getCurrentWindow } = await import("@tauri-apps/api/window");
   const position = await getCurrentWindow().outerPosition();
   return { x: position.x, y: position.y };
 }
@@ -32,8 +49,6 @@ export async function listenToWindowEvents(
     return () => undefined;
   }
 
-  const { listen } = await import("@tauri-apps/api/event");
-  const { getCurrentWindow } = await import("@tauri-apps/api/window");
   const unlistenPin = await listen<boolean>("pin-changed", (event) => onPinChanged(Boolean(event.payload)));
   const unlistenReset = await listen<WidgetPosition>("position-reset", (event) => onPositionReset(event.payload));
   const unlistenMoved = await getCurrentWindow().onMoved(({ payload }) => onWindowMoved({ x: payload.x, y: payload.y }));

@@ -64,9 +64,21 @@ fn apply_windows_widget_shape(window: &WebviewWindow) {
     let Ok(size) = window.outer_size() else {
         return;
     };
+    let scale_factor = window.scale_factor().unwrap_or(1.0);
+    let corner_radius = (36.0 * scale_factor).round() as i32;
+    let diameter = corner_radius * 2;
 
     // This is a real native window region, not a transparent rectangle around the UI.
-    let region = unsafe { CreateRoundRectRgn(0, 0, size.width as i32 + 1, size.height as i32 + 1, 44, 44) };
+    let region = unsafe {
+        CreateRoundRectRgn(
+            0,
+            0,
+            size.width as i32 + 1,
+            size.height as i32 + 1,
+            diameter,
+            diameter,
+        )
+    };
     if !region.is_invalid() {
         unsafe {
             let _ = SetWindowRgn(hwnd, Some(region), true);
@@ -133,6 +145,11 @@ pub fn run() {
         .on_window_event(|window, event| {
             match event {
                 WindowEvent::Resized(_) => {
+                    if let Some(webview_window) = window.get_webview_window(window.label()) {
+                        apply_windows_widget_shape(&webview_window);
+                    }
+                }
+                WindowEvent::ScaleFactorChanged { .. } => {
                     if let Some(webview_window) = window.get_webview_window(window.label()) {
                         apply_windows_widget_shape(&webview_window);
                     }

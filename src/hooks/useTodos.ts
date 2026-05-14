@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createInitialState } from "../store/defaultState";
 import { loadAppState, saveAppState } from "../store/appStore";
-import { readWindowPosition, setWindowPinned } from "./useWidgetWindow";
+import { readWindowPosition, setWindowPinned, setWindowPosition } from "./useWidgetWindow";
 import type { AppState, FilterType, TodoItem, WidgetPosition } from "../types/todo";
 
 function createId(): string {
@@ -20,6 +20,7 @@ export function useTodos() {
         setState(savedState);
         setHydrated(true);
         void setWindowPinned(savedState.alwaysOnTop);
+        void setWindowPosition(savedState.widgetPosition);
       }
     });
 
@@ -71,7 +72,7 @@ export function useTodos() {
         updatedAt: now,
       };
 
-      return { ...currentState, items: [...currentState.items, nextItem] };
+      return { ...currentState, filter: "all", items: [...currentState.items, nextItem] };
     });
   }, []);
 
@@ -85,6 +86,7 @@ export function useTodos() {
   const toggleCompleted = useCallback((id: string) => {
     setState((currentState) => ({
       ...currentState,
+      filter: currentState.filter === "active" || currentState.filter === "completed" ? "all" : currentState.filter,
       items: currentState.items.map((item) =>
         item.id === id ? { ...item, completed: !item.completed, updatedAt: Date.now() } : item,
       ),

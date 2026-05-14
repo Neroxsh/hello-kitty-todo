@@ -55,6 +55,21 @@
   user-select: none;
 }
 
+.drag-zone {
+  height: 100%;
+  min-width: 0;
+  cursor: grab;
+}
+
+.drag-zone:active {
+  cursor: grabbing;
+}
+
+.cat-zone {
+  display: grid;
+  place-items: center start;
+}
+
 .cat-head {
   width: 80px;
   height: 80px;
@@ -64,6 +79,9 @@
 }
 
 .title-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   min-width: 0;
 }
 

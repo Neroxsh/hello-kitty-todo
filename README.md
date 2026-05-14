@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Neroxsh/hello-kitty-todo/releases/latest">
+  <a href="https://github.com/Neroxsh/hello-kitty-todo/releases">
     <img alt="最新版下载" src="https://img.shields.io/github/v/release/Neroxsh/hello-kitty-todo?style=for-the-badge&label=Download" />
   </a>
   <img alt="macOS" src="https://img.shields.io/badge/macOS-supported-ff8db3?style=for-the-badge" />
@@ -18,7 +18,7 @@
 
 ## 下载
 
-到 [Releases](https://github.com/Neroxsh/hello-kitty-todo/releases/latest) 下载最新版：
+到 [Releases](https://github.com/Neroxsh/hello-kitty-todo/releases) 下载最新版：
 
 | 系统 | 下载哪个文件 |
 | --- | --- |

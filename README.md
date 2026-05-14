@@ -22,8 +22,8 @@
 
 | 系统 | 下载哪个文件 |
 | --- | --- |
-| macOS | `HelloKittyTodo_0.1.2_macOS_arm64.dmg` |
-| Windows | `HelloKittyTodo_0.1.2_Windows_x64_Setup.exe` |
+| macOS | `HelloKittyTodo_0.1.3_macOS_arm64.dmg` |
+| Windows | `HelloKittyTodo_0.1.3_Windows_x64_Setup.exe` |
 
 > macOS 版本暂未签名。第一次打开时，如果系统拦截，可以右键应用选择“打开”，或到系统设置里允许打开。
 

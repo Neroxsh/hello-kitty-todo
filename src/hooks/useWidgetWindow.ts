@@ -7,12 +7,13 @@ function isTauriRuntime(): boolean {
   return "__TAURI_INTERNALS__" in window;
 }
 
-export async function startWindowDrag(): Promise<void> {
+export function startWindowDrag(): void {
   if (!isTauriRuntime()) {
     return;
   }
 
-  await getCurrentWindow().startDragging().catch(() => undefined);
+  // Must be called synchronously inside a mouse event so Tauri can keep the native drag context alive.
+  getCurrentWindow().startDragging().catch(() => undefined);
 }
 
 export async function setWindowPinned(pinned: boolean): Promise<void> {

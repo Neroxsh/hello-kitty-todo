@@ -55,7 +55,7 @@ export default function App() {
               setIsFilterOpen((open) => !open);
               setIsAdding(false);
             }}
-            onDragStart={() => void startWindowDrag()}
+            onDragStart={startWindowDrag}
             onDragEnd={() => void saveCurrentWindowPosition()}
           />
           {isFilterOpen ? (

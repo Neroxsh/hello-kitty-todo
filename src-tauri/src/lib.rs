@@ -144,7 +144,8 @@ pub fn run() {
         })
         .on_window_event(|window, event| {
             match event {
-                WindowEvent::Resized(_) => {
+                WindowEvent::Resized(_)
+                | WindowEvent::Focused(_) => {
                     if let Some(webview_window) = window.get_webview_window(window.label()) {
                         apply_windows_widget_shape(&webview_window);
                     }

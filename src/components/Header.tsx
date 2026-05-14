@@ -43,10 +43,10 @@ export function Header({
     <>
       <img className="top-bow" src={topBow} alt="" aria-hidden="true" />
       <header className="widget-header" onPointerUp={onDragEnd}>
-        <div className="drag-zone cat-zone" data-tauri-drag-region onMouseDown={handleDragMouseDown}>
+        <div className="drag-zone cat-zone" onMouseDown={handleDragMouseDown}>
           <img className="cat-head" src={catHead} alt="" aria-hidden="true" />
         </div>
-        <div className="title-group drag-zone" data-tauri-drag-region onMouseDown={handleDragMouseDown}>
+        <div className="title-group drag-zone" onMouseDown={handleDragMouseDown}>
           <h1>我的任务</h1>
           <p>{dateLabel}</p>
         </div>

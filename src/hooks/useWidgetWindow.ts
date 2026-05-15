@@ -64,6 +64,7 @@ export async function listenToWindowEvents(
   onPinChanged: (pinned: boolean) => void,
   onPositionReset: (position: WidgetPosition) => void,
   onWindowMoved: (position: WidgetPosition) => void,
+  onWindowResized?: (height: number) => void,
 ): Promise<() => void> {
   if (!isTauriRuntime()) {
     return () => undefined;
@@ -72,10 +73,14 @@ export async function listenToWindowEvents(
   const unlistenPin = await listen<boolean>("pin-changed", (event) => onPinChanged(Boolean(event.payload)));
   const unlistenReset = await listen<WidgetPosition>("position-reset", (event) => onPositionReset(event.payload));
   const unlistenMoved = await getCurrentWindow().onMoved(({ payload }) => onWindowMoved({ x: payload.x, y: payload.y }));
+  const unlistenResized = onWindowResized
+    ? await getCurrentWindow().onResized(({ payload }) => onWindowResized(payload.height))
+    : () => undefined;
 
   return () => {
     unlistenPin();
     unlistenReset();
     unlistenMoved();
+    unlistenResized();
   };
 }

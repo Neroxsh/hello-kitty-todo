@@ -61,6 +61,8 @@
   height: 100%;
   min-width: 0;
   cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .drag-zone:active {
@@ -441,33 +443,4 @@
   letter-spacing: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.resize-handle {
-  height: 8px;
-  cursor: ns-resize;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.resize-handle:hover,
-.resize-handle:active {
-  cursor: ns-resize;
-}
-
-.resize-handle::after {
-  content: "";
-  display: block;
-  width: 48px;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(244, 125, 167, 0.35);
-  transition: background 120ms ease;
-}
-
-.resize-handle:hover::after,
-.resize-handle:active::after {
-  background: rgba(244, 125, 167, 0.6);
 }

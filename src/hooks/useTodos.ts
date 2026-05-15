@@ -75,7 +75,7 @@ export function useTodos() {
         updatedAt: now,
       };
 
-      return { ...currentState, filter: "all", items: [...currentState.items, nextItem] };
+      return { ...currentState, items: [...currentState.items, nextItem] };
     });
   }, []);
 
@@ -89,7 +89,6 @@ export function useTodos() {
   const toggleCompleted = useCallback((id: string) => {
     setState((currentState) => ({
       ...currentState,
-      filter: currentState.filter === "active" || currentState.filter === "completed" ? "all" : currentState.filter,
       items: currentState.items.map((item) =>
         item.id === id ? { ...item, completed: !item.completed, updatedAt: Date.now() } : item,
       ),

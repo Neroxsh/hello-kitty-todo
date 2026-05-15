@@ -5,7 +5,6 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { TaskList } from "./components/TaskList";
 import { useTodos } from "./hooks/useTodos";
-import { ResizeHandle } from "./components/ResizeHandle";
 import { listenToWindowEvents, startWindowDrag } from "./hooks/useWidgetWindow";
 import { formatTodayLabel } from "./utils/date";
 
@@ -20,8 +19,8 @@ export default function App() {
     setFilter,
     setPinned,
     setWidgetPosition,
+    setWidgetHeight,
     saveCurrentWindowPosition,
-    saveWidgetHeight,
   } = useTodos();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -34,6 +33,7 @@ export default function App() {
       (pinned) => setPinned(pinned),
       (position) => setWidgetPosition(position),
       (position) => setWidgetPosition(position),
+      (height) => setWidgetHeight(height),
     ).then((cleanup) => {
       unlisten = cleanup;
     });
@@ -80,10 +80,6 @@ export default function App() {
             <AddTask isAdding={isAdding} onCancel={() => setIsAdding(false)} onAdd={addTodo} />
             <Footer pinned={state.alwaysOnTop} onTogglePinned={() => setPinned(!state.alwaysOnTop)} />
           </div>
-          <ResizeHandle
-            minHeight={520}
-            onResizeEnd={(height) => saveWidgetHeight(height)}
-          />
         </div>
       </section>
     </main>

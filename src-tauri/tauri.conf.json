@@ -19,7 +19,7 @@
         "height": 592,
         "x": 980,
         "y": 80,
-        "resizable": false,
+        "resizable": true,
         "decorations": false,
         "transparent": true,
         "backgroundColor": "#00000000",
@@ -45,6 +45,17 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "macOS": {
+      "minimumSystemVersion": "11.0",
+      "signingIdentity": "-"
+    },
+    "windows": {
+      "wix": null,
+      "nsis": {
+        "installMode": "currentUser",
+        "installerIcon": "icons/icon.ico"
+      }
+    }
   }
 }

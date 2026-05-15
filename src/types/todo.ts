@@ -1,5 +1,7 @@
 export type FilterType = "all" | "active" | "completed" | "favorite";
 
+export type SortMode = "manual" | "importance" | "deadline" | "smart";
+
 export interface TodoItem {
   id: string;
   text: string;
@@ -8,6 +10,8 @@ export interface TodoItem {
   order: number;
   createdAt: number;
   updatedAt: number;
+  deadline?: number;
+  importance: number;
 }
 
 export interface WidgetPosition {
@@ -18,6 +22,7 @@ export interface WidgetPosition {
 export interface AppState {
   items: TodoItem[];
   filter: FilterType;
+  sortMode: SortMode;
   alwaysOnTop: boolean;
   theme: "pink";
   widgetPosition?: WidgetPosition;

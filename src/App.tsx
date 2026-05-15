@@ -17,6 +17,7 @@ export default function App() {
     toggleCompleted,
     toggleFavorite,
     setFilter,
+    setSortMode,
     setPinned,
     setWidgetPosition,
     setWidgetHeight,
@@ -63,8 +64,13 @@ export default function App() {
           {isFilterOpen ? (
             <FilterMenu
               activeFilter={state.filter}
+              sortMode={state.sortMode}
               onSelect={(filter) => {
                 setFilter(filter);
+                setIsFilterOpen(false);
+              }}
+              onSortChange={(mode) => {
+                setSortMode(mode);
                 setIsFilterOpen(false);
               }}
             />

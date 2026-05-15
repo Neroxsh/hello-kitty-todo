@@ -2,10 +2,25 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { createInitialState } from "../store/defaultState";
 import { loadAppState, saveAppState } from "../store/appStore";
 import { readWindowHeight, readWindowPosition, setWindowPinned, setWindowPosition, setWidgetWindowHeight } from "./useWidgetWindow";
-import type { AppState, FilterType, TodoItem, WidgetPosition } from "../types/todo";
+import type { AppState, FilterType, SortMode, TodoItem, WidgetPosition } from "../types/todo";
 
 function createId(): string {
   return crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function getUrgencyScore(item: TodoItem, now: number): number {
+  if (!item.deadline) {
+    return 0;
+  }
+  if (now >= item.deadline) {
+    return 1;
+  }
+  const totalDuration = item.deadline - item.createdAt;
+  if (totalDuration <= 0) {
+    return 0;
+  }
+  const elapsed = now - item.createdAt;
+  return elapsed / totalDuration;
 }
 
 export function useTodos() {
@@ -41,7 +56,26 @@ export function useTodos() {
   }, [hydrated, state]);
 
   const visibleItems = useMemo(() => {
-    const sorted = [...state.items].sort((a, b) => a.order - b.order);
+    const sorted = [...state.items].sort((a, b) => {
+      switch (state.sortMode) {
+        case "importance":
+          return b.importance - a.importance || a.order - b.order;
+        case "deadline": {
+          if (!a.deadline && !b.deadline) return a.order - b.order;
+          if (!a.deadline) return 1;
+          if (!b.deadline) return -1;
+          return a.deadline - b.deadline || a.order - b.order;
+        }
+        case "smart": {
+          const now = Date.now();
+          const scoreA = 0.4 * (a.importance / 5) + 0.6 * getUrgencyScore(a, now);
+          const scoreB = 0.4 * (b.importance / 5) + 0.6 * getUrgencyScore(b, now);
+          return scoreB - scoreA || a.order - b.order;
+        }
+        default:
+          return a.order - b.order;
+      }
+    });
 
     switch (state.filter) {
       case "active":
@@ -53,9 +87,9 @@ export function useTodos() {
       default:
         return sorted;
     }
-  }, [state.filter, state.items]);
+  }, [state.filter, state.sortMode, state.items]);
 
-  const addTodo = useCallback((text: string) => {
+  const addTodo = useCallback((text: string, importance = 0, deadline?: number) => {
     const trimmedText = text.trim();
 
     if (!trimmedText) {
@@ -73,6 +107,8 @@ export function useTodos() {
         order: nextOrder,
         createdAt: now,
         updatedAt: now,
+        importance,
+        deadline,
       };
 
       return { ...currentState, items: [...currentState.items, nextItem] };
@@ -106,6 +142,10 @@ export function useTodos() {
 
   const setFilter = useCallback((filter: FilterType) => {
     setState((currentState) => ({ ...currentState, filter }));
+  }, []);
+
+  const setSortMode = useCallback((sortMode: SortMode) => {
+    setState((currentState) => ({ ...currentState, sortMode }));
   }, []);
 
   const setPinned = useCallback((alwaysOnTop: boolean) => {
@@ -146,6 +186,7 @@ export function useTodos() {
     toggleCompleted,
     toggleFavorite,
     setFilter,
+    setSortMode,
     setPinned,
     setWidgetPosition,
     setWidgetHeight,

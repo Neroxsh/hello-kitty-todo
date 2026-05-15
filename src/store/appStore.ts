@@ -1,5 +1,5 @@
 import { createInitialState } from "./defaultState";
-import type { AppState, FilterType, TodoItem } from "../types/todo";
+import type { AppState, FilterType, SortMode, TodoItem } from "../types/todo";
 
 const STORAGE_KEY = "hello-kitty-todo-state";
 const STORE_FILE = "store.json";
@@ -33,6 +33,10 @@ function isFilterType(value: unknown): value is FilterType {
   return value === "all" || value === "active" || value === "completed" || value === "favorite";
 }
 
+function isSortMode(value: unknown): value is SortMode {
+  return value === "manual" || value === "importance" || value === "deadline" || value === "smart";
+}
+
 function normalizeItem(item: Partial<TodoItem>, fallbackOrder: number): TodoItem | null {
   if (typeof item.text !== "string" || item.text.trim().length === 0) {
     return null;
@@ -48,6 +52,8 @@ function normalizeItem(item: Partial<TodoItem>, fallbackOrder: number): TodoItem
     order: typeof item.order === "number" ? item.order : fallbackOrder,
     createdAt: typeof item.createdAt === "number" ? item.createdAt : now,
     updatedAt: typeof item.updatedAt === "number" ? item.updatedAt : now,
+    deadline: typeof item.deadline === "number" ? item.deadline : undefined,
+    importance: typeof item.importance === "number" && item.importance >= 0 && item.importance <= 5 ? item.importance : 0,
   };
 }
 
@@ -69,6 +75,7 @@ export function normalizeState(value: unknown): AppState {
   return {
     items,
     filter: isFilterType(state.filter) ? state.filter : initial.filter,
+    sortMode: isSortMode(state.sortMode) ? state.sortMode : initial.sortMode,
     alwaysOnTop: typeof state.alwaysOnTop === "boolean" ? state.alwaysOnTop : initial.alwaysOnTop,
     theme: "pink",
     widgetPosition:

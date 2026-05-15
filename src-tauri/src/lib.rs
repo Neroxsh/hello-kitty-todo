@@ -92,8 +92,6 @@ fn apply_windows_widget_shape(_window: &WebviewWindow) {}
 fn setup_widget_window(app: &AppHandle) {
     if let Some(window) = app.get_webview_window("main") {
         let _ = window.set_shadow(false);
-        #[cfg(target_os = "windows")]
-        let _ = window.set_skip_taskbar(false);
         apply_windows_widget_shape(&window);
     }
 }

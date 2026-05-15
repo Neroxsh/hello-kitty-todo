@@ -17,6 +17,43 @@
   border-radius: 36px;
   padding: 0;
   overflow: hidden;
+  container-type: inline-size;
+}
+
+/* 窄窗口自适应 — 等比缩小 header 区域 */
+@container (max-width: 380px) {
+  .widget-header {
+    grid-template-columns: 66px minmax(0, 1fr) auto;
+    min-height: 110px;
+    padding: 28px 14px 10px;
+  }
+  .cat-head {
+    width: 56px;
+    height: 56px;
+  }
+  .title-group h1 {
+    font-size: 22px;
+  }
+  .title-group p {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  .image-button {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+  }
+  .image-button img {
+    width: 36px;
+    height: 36px;
+  }
+  .top-bow {
+    width: 48px;
+    height: 48px;
+  }
+  .header-actions {
+    gap: 0;
+  }
 }
 
 .widget-card {
@@ -53,7 +90,7 @@
   grid-template-columns: 92px minmax(0, 1fr) auto;
   align-items: center;
   min-height: 140px;
-  padding: 36px 20px 14px;
+  padding: 36px 12px 14px 20px;
   user-select: none;
 }
 
@@ -111,7 +148,8 @@
 
 .header-actions {
   display: flex;
-  gap: 8px;
+  gap: 0;
+  margin-right: -8px;
 }
 
 .image-button {
